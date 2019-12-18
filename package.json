@@ -1,0 +1,33 @@
+{
+  "name": "trading-card-kata",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "backpack dev",
+    "test": "NODE_ENV=test jest",
+    "build": "backpack build"
+  },
+  "repository": "https://github.com/skarahoda/trading-card-kata.git",
+  "author": "skarahoda <skarahoda@sabanciuniv.edu>",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/core": "^7.7.5",
+    "backpack-core": "^0.8.4"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.24",
+    "babel-jest": "^24.9.0",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.19.1",
+    "jest-cli": "^24.9.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"
+    ],
+    "globals": {
+      "__DEV__": true
+    }
+  }
+}
