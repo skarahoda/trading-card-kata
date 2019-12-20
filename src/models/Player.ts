@@ -65,7 +65,7 @@ export class Player {
         return damage;
     };
 
-    beDamaged(damage: number): void {
+    receiveDamage(damage: number): void {
         this.health -= damage;
     }
 }

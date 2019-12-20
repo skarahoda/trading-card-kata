@@ -10,8 +10,8 @@ const playerConfig = {
 export class Game {
     private readonly player1: Player;
     private readonly player2: Player;
-    private readonly activePlayer: Player;
-    private readonly opponent: Player;
+    private activePlayer: Player;
+    private opponent: Player;
 
     constructor({
                     player1 = new Player(playerConfig),
@@ -36,12 +36,24 @@ export class Game {
             this.player1.pickCard();
             this.player2.pickCard();
         }
-        this.player1.incrementManaSlots();
-        this.player1.refillManaSlots();
+        this.startRound();
     }
 
     playCard(number: number): void {
         const damage = this.activePlayer.playCard(number);
-        this.opponent.beDamaged(damage);
+        this.opponent.receiveDamage(damage);
+    }
+
+    switchActivePlayer(): void {
+        let tmp = this.opponent;
+        this.opponent = this.activePlayer;
+        this.activePlayer = tmp;
+        this.startRound();
+    }
+
+    private startRound(): void {
+        this.activePlayer.pickCard();
+        this.activePlayer.incrementManaSlots();
+        this.activePlayer.refillManaSlots();
     }
 }
