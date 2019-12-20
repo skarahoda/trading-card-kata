@@ -1,8 +1,8 @@
 import {Player} from './Player';
 
 export class Game {
-    private readonly player1;
-    private readonly player2;
+    private readonly player1: Player;
+    private readonly player2: Player;
 
     constructor() {
         this.player1 = new Player();
