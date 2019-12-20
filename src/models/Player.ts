@@ -1,3 +1,6 @@
+const MAX_MANA_SLOT = 10;
+const MAX_HAND = 5;
+
 export class Player {
     private manaSlots: number;
     private filledManaSlots: number;
@@ -15,7 +18,9 @@ export class Player {
 
     pickCard(): void {
         const index = Math.floor(Math.random()*this.deck.length);
-        this.hand.push(this.deck[index]);
+        if(this.hand.length < MAX_HAND){
+            this.hand.push(this.deck[index]);
+        }
         this.deck.splice(index, 1);
     };
 
@@ -36,7 +41,7 @@ export class Player {
     }
 
     incrementManaSlots(): void {
-        if(this.manaSlots < 10){
+        if(this.manaSlots < MAX_MANA_SLOT){
             this.manaSlots += 1;
         }
     }

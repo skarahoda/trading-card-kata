@@ -55,13 +55,13 @@ export class Game {
         this.startRound();
     }
 
+    isWin(): boolean {
+        return this.opponent.isDead();
+    }
+
     private startRound(): void {
         this.activePlayer.pickCard();
         this.activePlayer.incrementManaSlots();
         this.activePlayer.refillManaSlots();
-    }
-
-    isWin(): boolean {
-        return this.opponent.isDead();
     }
 }

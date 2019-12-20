@@ -80,4 +80,12 @@ describe('Player', () => {
             player.playCard(0);
         }).toThrow(new Error('Insufficient mana'));
     });
+
+    it('should not pick a card when the hand is full', () => {
+        const player = new Player({ hand: [1,2,3,4,5], deck: [1,2,3,4,5]});
+        player.pickCard();
+
+        expect(player.getHand()).toHaveLength(5);
+        expect(player.getDeck()).toHaveLength(4);
+    });
 });
