@@ -68,4 +68,11 @@ export class Player {
     receiveDamage(damage: number): void {
         this.health -= damage;
     }
+
+    isOutOfMove(): boolean {
+        return this.hand.length === 0 || this.hand.reduce(
+            (isOutOfMove, card) => isOutOfMove && card > this.filledManaSlots,
+            true,
+        );
+    }
 }

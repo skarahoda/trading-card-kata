@@ -44,6 +44,10 @@ export class Game {
         this.opponent.receiveDamage(damage);
     }
 
+    isOutOfMove(): boolean {
+        return this.activePlayer.isOutOfMove();
+    }
+
     switchActivePlayer(): void {
         let tmp = this.opponent;
         this.opponent = this.activePlayer;

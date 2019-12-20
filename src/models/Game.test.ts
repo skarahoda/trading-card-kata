@@ -61,5 +61,33 @@ describe('Game', () => {
             expect(player2.getFilledManaSlots()).toBe(6);
             expect(player2.getManaSlots()).toBe(6);
         });
+
+        it('should be out of move when mana slots are not enough', () => {
+            const game = new Game({
+                player1: new Player({ manaSlots: 4, hand: [3, 5]}),
+                player2: new Player({ health: 5}),
+            });
+
+            game.playCard(0);
+            expect(game.isOutOfMove()).toEqual(true);
+        });
+
+        it('should be out of move when hand is empty', () => {
+            const game = new Game({
+                player1: new Player({ manaSlots: 5, hand: []}),
+                player2: new Player({ health: 5}),
+            });
+
+            expect(game.isOutOfMove()).toEqual(true);
+        });
+
+        it('should not be out of move when hand is empty', () => {
+            const game = new Game({
+                player1: new Player({ manaSlots: 5, hand: []}),
+                player2: new Player({ health: 5}),
+            });
+
+            expect(game.isOutOfMove()).toEqual(true);
+        });
     });
 });
