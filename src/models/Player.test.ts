@@ -32,7 +32,7 @@ describe('Player', () => {
         expect(cards.filter(value => value === 8)).toHaveLength(1);
     });
 
-    it('can increment the mana slots', () => {
+    it('should increment the mana slots', () => {
         const player = new Player();
         player.incrementManaSlots();
         expect(player.getManaSlots()).toBe(1);
@@ -46,5 +46,12 @@ describe('Player', () => {
         }
         player.incrementManaSlots();
         expect(player.getManaSlots()).toBe(10);
+    });
+
+    it('should refill mana slots', () => {
+        const player = new Player();
+        player.incrementManaSlots();
+        player.refillManaSlots();
+        expect(player.getFilledManaSlots()).toBe(1);
     });
 });

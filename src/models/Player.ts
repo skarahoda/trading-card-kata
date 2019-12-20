@@ -1,5 +1,6 @@
 export class Player {
     private manaSlots: number;
+    private filledManaSlots: number;
     private health: number;
     private readonly deck: number[];
     private readonly hand: number[];
@@ -40,5 +41,13 @@ export class Player {
         if(this.manaSlots < 10){
             this.manaSlots += 1;
         }
+    }
+
+    getFilledManaSlots() {
+        return this.filledManaSlots;
+    }
+
+    refillManaSlots() {
+        this.filledManaSlots = this.manaSlots;
     }
 }
