@@ -88,4 +88,11 @@ describe('Player', () => {
         expect(player.getHand()).toHaveLength(5);
         expect(player.getDeck()).toHaveLength(4);
     });
+
+    it('should receive damage when trying to pick up a card from empty deck', () => {
+        const player = new Player({ health: 30, deck: []});
+        player.pickCard();
+
+        expect(player.getHealth()).toBe(29);
+    });
 });

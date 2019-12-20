@@ -17,11 +17,16 @@ export class Player {
     }
 
     pickCard(): void {
-        const index = Math.floor(Math.random()*this.deck.length);
-        if(this.hand.length < MAX_HAND){
-            this.hand.push(this.deck[index]);
+        if(this.deck.length === 0) {
+            this.receiveDamage(1);
         }
-        this.deck.splice(index, 1);
+        else {
+            const index = Math.floor(Math.random()*this.deck.length);
+            if(this.hand.length < MAX_HAND){
+                this.hand.push(this.deck[index]);
+            }
+            this.deck.splice(index, 1);
+        }
     };
 
     getManaSlots(): number {
