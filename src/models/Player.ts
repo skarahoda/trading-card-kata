@@ -75,4 +75,8 @@ export class Player {
             true,
         );
     }
+
+    isDead(): boolean {
+        return this.health <= 0;
+    }
 }

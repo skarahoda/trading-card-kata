@@ -89,5 +89,15 @@ describe('Game', () => {
 
             expect(game.isOutOfMove()).toEqual(true);
         });
+
+        it('should win', () => {
+            const game = new Game({
+                player1: new Player({ manaSlots: 5, hand: [5]}),
+                player2: new Player({ health: 5}),
+            });
+
+            game.playCard(0);
+            expect(game.isWin()).toEqual(true);
+        })
     });
 });

@@ -60,4 +60,8 @@ export class Game {
         this.activePlayer.incrementManaSlots();
         this.activePlayer.refillManaSlots();
     }
+
+    isWin(): boolean {
+        return this.opponent.isDead();
+    }
 }
