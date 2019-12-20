@@ -1,11 +1,11 @@
 export class Player {
-    private mana: number;
+    private manaSlots: number;
     private health: number;
     private readonly deck: number[];
     private readonly hand: number[];
 
     constructor() {
-        this.mana = 0;
+        this.manaSlots = 0;
         this.health = 30;
         this.deck = [0,0,1,1,2,2,2,3,3,3,3,4,4,4,5,5,6,6,7,8];
         this.hand = [];
@@ -20,8 +20,8 @@ export class Player {
         this.deck.splice(index, 1);
     };
 
-    getMana(): number {
-        return this.mana;
+    getManaSlots(): number {
+        return this.manaSlots;
     }
 
     getHealth(): number {
@@ -34,5 +34,11 @@ export class Player {
 
     getHand(): ReadonlyArray<number> {
         return this.hand;
+    }
+
+    incrementManaSlots() {
+        if(this.manaSlots < 10){
+            this.manaSlots += 1;
+        }
     }
 }

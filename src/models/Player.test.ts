@@ -8,7 +8,7 @@ describe('Player', () => {
 
     it('should starts with correct mana and health', () => {
         const player = new Player();
-        expect(player.getMana()).toBe(0);
+        expect(player.getManaSlots()).toBe(0);
         expect(player.getHealth()).toBe(30);
     });
 
@@ -30,5 +30,21 @@ describe('Player', () => {
         expect(cards.filter(value => value === 6)).toHaveLength(2);
         expect(cards.filter(value => value === 7)).toHaveLength(1);
         expect(cards.filter(value => value === 8)).toHaveLength(1);
+    });
+
+    it('can increment the mana slots', () => {
+        const player = new Player();
+        player.incrementManaSlots();
+        expect(player.getManaSlots()).toBe(1);
+    });
+
+    it('can increment the mana slots upto 10', () => {
+        const player = new Player();
+        for(let i = 0; i< 10; i++){
+            player.incrementManaSlots();
+            expect(player.getManaSlots()).toBe(i+1);
+        }
+        player.incrementManaSlots();
+        expect(player.getManaSlots()).toBe(10);
     });
 });
