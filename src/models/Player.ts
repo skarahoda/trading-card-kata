@@ -5,14 +5,12 @@ export class Player {
     private readonly deck: number[];
     private readonly hand: number[];
 
-    constructor() {
-        this.manaSlots = 0;
-        this.health = 30;
-        this.deck = [0,0,1,1,2,2,2,3,3,3,3,4,4,4,5,5,6,6,7,8];
-        this.hand = [];
-        this.pickCard();
-        this.pickCard();
-        this.pickCard();
+    constructor({ deck = [], hand = [], manaSlots = 0, health = 30 } = {}) {
+        this.manaSlots = manaSlots;
+        this.health = health;
+        this.deck = [...deck];
+        this.hand = [...hand];
+        this.refillManaSlots();
     }
 
     pickCard(): void {
@@ -37,17 +35,37 @@ export class Player {
         return this.hand;
     }
 
-    incrementManaSlots() {
+    incrementManaSlots(): void {
         if(this.manaSlots < 10){
             this.manaSlots += 1;
         }
     }
 
-    getFilledManaSlots() {
+    getFilledManaSlots(): number {
         return this.filledManaSlots;
     }
 
-    refillManaSlots() {
+    refillManaSlots(): void {
         this.filledManaSlots = this.manaSlots;
+    }
+
+    playCard(i: number): number {
+        if(i >= this.hand.length) {
+            throw new RangeError('Index is too high');
+        }
+        if(i < 0) {
+            throw new RangeError('Index is too low');
+        }
+        if(this.filledManaSlots < this.hand[i]) {
+            throw new Error('Insufficient mana');
+        }
+        const damage = this.hand[i];
+        this.filledManaSlots -= damage;
+        this.hand.splice(i, 1);
+        return damage;
+    };
+
+    beDamaged(damage: number): void {
+        this.health -= damage;
     }
 }
