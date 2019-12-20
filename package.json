@@ -13,6 +13,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
     "@babel/preset-typescript": "^7.7.7",
     "@types/jest": "^24.0.24",
     "babel-jest": "^24.9.0",
@@ -20,6 +21,9 @@
   },
   "jest": {
     "testEnvironment": "node",
+    "transform": {
+      "^.+\\.ts$": "babel-jest"
+    },
     "transformIgnorePatterns": [
       "[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"
     ],
