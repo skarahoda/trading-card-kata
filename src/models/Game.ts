@@ -1,67 +1,64 @@
-import {Player} from './Player';
+import {IBleedingOut, Player} from './Player';
 
 const playerConfig = {
-    deck: [0,0,1,1,2,2,2,3,3,3,3,4,4,4,5,5,6,6,7,8],
+    deck: [0, 0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5, 6, 6, 7, 8],
     hand: [],
     manaSlots: 0,
     health: 30,
 };
 
 export class Game {
-    private readonly player1: Player;
-    private readonly player2: Player;
     private activePlayer: Player;
     private opponent: Player;
 
     constructor({
-                    player1 = new Player(playerConfig),
-                    player2 = new Player(playerConfig)
-    } = {}) {
-        this.player1 = player1;
-        this.player2 = player2;
-        this.activePlayer = this.player1;
-        this.opponent = this.player2;
+                    activePlayer = new Player({...playerConfig, name: 'Player 1'}),
+                    opponent = new Player({...playerConfig, name: 'Player 2'})
+                } = {}) {
+        this.activePlayer = activePlayer;
+        this.opponent = opponent;
     }
 
-    getPlayer1(): Player {
-        return this.player1;
+    getActivePlayer(): Player {
+        return this.activePlayer;
     }
 
-    getPlayer2(): Player {
-        return this.player2;
+    getOpponent(): Player {
+        return this.opponent;
     }
 
     prepareFirstRound(): void {
-        for(let i = 0; i < 3; i++) {
-            this.player1.pickCard();
-            this.player2.pickCard();
+        for (let i = 0; i < 3; i++) {
+            this.activePlayer.pickCard();
+            this.opponent.pickCard();
         }
         this.startRound();
     }
 
-    playCard(number: number): void {
+    playCard(number: number): number {
         const damage = this.activePlayer.playCard(number);
         this.opponent.receiveDamage(damage);
+        return damage;
     }
 
     isOutOfMove(): boolean {
         return this.activePlayer.isOutOfMove();
     }
 
-    switchActivePlayer(): void {
+    switchActivePlayer(): IBleedingOut {
         let tmp = this.opponent;
         this.opponent = this.activePlayer;
         this.activePlayer = tmp;
-        this.startRound();
+        return this.startRound();
     }
 
     isWin(): boolean {
         return this.opponent.isDead();
     }
 
-    private startRound(): void {
-        this.activePlayer.pickCard();
+    private startRound(): IBleedingOut {
         this.activePlayer.incrementManaSlots();
         this.activePlayer.refillManaSlots();
+        return this.activePlayer.pickCard();
     }
 }

@@ -2,8 +2,9 @@
 import {Player} from './Player';
 
 describe('Player', () => {
-    it('should create object', () => {
-        expect(new Player()).toBeDefined();
+    it('should have name', () => {
+        const player: Player = new Player({name: 'Player 1'});
+        expect(player.getName()).toEqual('Player 1');
     });
 
     it('should increment the mana slots', () => {
@@ -14,26 +15,26 @@ describe('Player', () => {
 
     it('can increment the mana slots upto 10', () => {
         const player = new Player();
-        for(let i = 0; i< 10; i++){
+        for (let i = 0; i < 10; i++) {
             player.incrementManaSlots();
-            expect(player.getManaSlots()).toBe(i+1);
+            expect(player.getManaSlots()).toBe(i + 1);
         }
         player.incrementManaSlots();
         expect(player.getManaSlots()).toBe(10);
     });
 
     it('should get mana slot', () => {
-        const player = new Player({ manaSlots: 10});
+        const player = new Player({manaSlots: 10});
         expect(player.getManaSlots()).toBe(10);
     });
 
     it('should get health', () => {
-        const player = new Player({ health: 20});
+        const player = new Player({health: 20});
         expect(player.getHealth()).toBe(20);
     });
 
     it('should get deck', () => {
-        const player = new Player({ deck: [1,3,2,3]});
+        const player = new Player({deck: [1, 3, 2, 3]});
         const deck = player.getDeck();
         expect(deck.filter(value => value === 1)).toHaveLength(1);
         expect(deck.filter(value => value === 2)).toHaveLength(1);
@@ -42,7 +43,7 @@ describe('Player', () => {
     });
 
     it('should get hand', () => {
-        const player = new Player({ hand: [1,3,2,3]});
+        const player = new Player({hand: [1, 3, 2, 3]});
         const hand = player.getHand();
         expect(hand.filter(value => value === 1)).toHaveLength(1);
         expect(hand.filter(value => value === 2)).toHaveLength(1);
@@ -82,7 +83,7 @@ describe('Player', () => {
     });
 
     it('should not pick a card when the hand is full', () => {
-        const player = new Player({ hand: [1,2,3,4,5], deck: [1,2,3,4,5]});
+        const player = new Player({hand: [1, 2, 3, 4, 5], deck: [1, 2, 3, 4, 5]});
         player.pickCard();
 
         expect(player.getHand()).toHaveLength(5);
@@ -90,9 +91,14 @@ describe('Player', () => {
     });
 
     it('should receive damage when trying to pick up a card from empty deck', () => {
-        const player = new Player({ health: 30, deck: []});
-        player.pickCard();
-
+        const player = new Player({health: 30, deck: []});
+        expect(player.pickCard().isBleedingOut).toEqual(true);
         expect(player.getHealth()).toBe(29);
+    });
+
+    it('should not receive damage when pick up a card from deck', () => {
+        const player = new Player({health: 30, deck: [1]});
+        expect(player.pickCard().isBleedingOut).toEqual(false);
+        expect(player.getHealth()).toBe(30);
     });
 });

@@ -2,12 +2,14 @@
   "name": "trading-card-kata",
   "version": "1.0.0",
   "scripts": {
+    "start": "ts-node src",
     "test": "jest"
   },
   "repository": "https://github.com/skarahoda/trading-card-kata.git",
   "author": "skarahoda <skarahoda@sabanciuniv.edu>",
   "license": "MIT",
   "dependencies": {
+    "inquirer": "^7.0.1",
     "ts-node": "^8.5.4",
     "typescript": "^3.7.3"
   },
@@ -15,6 +17,7 @@
     "@babel/core": "^7.7.7",
     "@babel/preset-env": "^7.7.7",
     "@babel/preset-typescript": "^7.7.7",
+    "@types/inquirer": "^6.5.0",
     "@types/jest": "^24.0.24",
     "babel-jest": "^24.9.0",
     "jest": "^24.9.0"

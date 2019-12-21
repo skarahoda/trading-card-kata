@@ -1,7 +1,6 @@
 import {Game} from './Game';
 import {Player} from './Player';
 
-
 let game: Game;
 describe('Game', () => {
     beforeEach(() => {
@@ -9,13 +8,13 @@ describe('Game', () => {
     });
 
     it('should have two player', () => {
-        expect(game.getPlayer1()).toBeInstanceOf(Player);
-        expect(game.getPlayer2()).toBeInstanceOf(Player);
+        expect(game.getActivePlayer()).toBeInstanceOf(Player);
+        expect(game.getOpponent()).toBeInstanceOf(Player);
     });
 
     it('should complete the preparation', () => {
         game.prepareFirstRound();
-        for(let player of [game.getPlayer1(), game.getPlayer2()]) {
+        for (let player of [game.getActivePlayer(), game.getOpponent()]) {
             const deck = player.getDeck();
             const hand = player.getHand();
 
@@ -32,40 +31,42 @@ describe('Game', () => {
             expect(cards.filter(value => value === 8)).toHaveLength(1);
         }
 
-        expect(game.getPlayer1().getManaSlots()).toEqual(1);
-        expect(game.getPlayer1().getFilledManaSlots()).toEqual(1);
+        expect(game.getActivePlayer().getHand()).toHaveLength(4);
+        expect(game.getOpponent().getHand()).toHaveLength(3);
+        expect(game.getActivePlayer().getManaSlots()).toEqual(1);
+        expect(game.getActivePlayer().getFilledManaSlots()).toEqual(1);
     });
 
     describe('Active Player', () => {
         it('should damage to opponent', () => {
             const game = new Game({
-                player1: new Player({ manaSlots: 10, hand: [2]}),
-                player2: new Player({ health: 5}),
+                activePlayer: new Player({manaSlots: 10, hand: [2]}),
+                opponent: new Player({health: 5}),
             });
 
-            game.playCard(0);
-            expect(game.getPlayer2().getHealth()).toEqual(3);
+            expect(game.playCard(0)).toEqual(2);
+            expect(game.getOpponent().getHealth()).toEqual(3);
         });
 
         it('should switch to opponent', () => {
-            const player2 = new Player({ manaSlots: 5, hand: [], deck: [1]});
+            const opponent = new Player({manaSlots: 5, hand: [], deck: [1]});
             const game = new Game({
-                player1: new Player(),
-                player2,
+                activePlayer: new Player(),
+                opponent,
             });
 
             game.switchActivePlayer();
 
-            expect(player2.getHand()).toHaveLength(1);
-            expect(player2.getDeck()).toHaveLength(0);
-            expect(player2.getFilledManaSlots()).toBe(6);
-            expect(player2.getManaSlots()).toBe(6);
+            expect(opponent.getHand()).toHaveLength(1);
+            expect(opponent.getDeck()).toHaveLength(0);
+            expect(opponent.getFilledManaSlots()).toBe(6);
+            expect(opponent.getManaSlots()).toBe(6);
         });
 
         it('should be out of move when mana slots are not enough', () => {
             const game = new Game({
-                player1: new Player({ manaSlots: 4, hand: [3, 5]}),
-                player2: new Player({ health: 5}),
+                activePlayer: new Player({manaSlots: 4, hand: [3, 5]}),
+                opponent: new Player({health: 5}),
             });
 
             game.playCard(0);
@@ -74,8 +75,8 @@ describe('Game', () => {
 
         it('should be out of move when hand is empty', () => {
             const game = new Game({
-                player1: new Player({ manaSlots: 5, hand: []}),
-                player2: new Player({ health: 5}),
+                activePlayer: new Player({manaSlots: 5, hand: []}),
+                opponent: new Player({health: 5}),
             });
 
             expect(game.isOutOfMove()).toEqual(true);
@@ -83,8 +84,8 @@ describe('Game', () => {
 
         it('should not be out of move when hand is empty', () => {
             const game = new Game({
-                player1: new Player({ manaSlots: 5, hand: []}),
-                player2: new Player({ health: 5}),
+                activePlayer: new Player({manaSlots: 5, hand: []}),
+                opponent: new Player({health: 5}),
             });
 
             expect(game.isOutOfMove()).toEqual(true);
@@ -92,12 +93,12 @@ describe('Game', () => {
 
         it('should win', () => {
             const game = new Game({
-                player1: new Player({ manaSlots: 5, hand: [5]}),
-                player2: new Player({ health: 5}),
+                activePlayer: new Player({manaSlots: 5, hand: [5]}),
+                opponent: new Player({health: 5}),
             });
 
             game.playCard(0);
             expect(game.isWin()).toEqual(true);
-        })
+        });
     });
 });

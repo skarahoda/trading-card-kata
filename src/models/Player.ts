@@ -1,14 +1,26 @@
 const MAX_MANA_SLOT = 10;
 const MAX_HAND = 5;
 
+export interface IBleedingOut {
+    isBleedingOut: boolean
+}
+
 export class Player {
+    private readonly name: string;
     private manaSlots: number;
     private filledManaSlots: number;
     private health: number;
     private readonly deck: number[];
     private readonly hand: number[];
 
-    constructor({ deck = [], hand = [], manaSlots = 0, health = 30 } = {}) {
+    constructor({
+                    deck = [],
+                    hand = [],
+                    manaSlots = 0,
+                    health = 30,
+                    name = '',
+                } = {}) {
+        this.name = name;
         this.manaSlots = manaSlots;
         this.health = health;
         this.deck = [...deck];
@@ -16,17 +28,18 @@ export class Player {
         this.refillManaSlots();
     }
 
-    pickCard(): void {
-        if(this.deck.length === 0) {
+    pickCard(): IBleedingOut {
+        if (this.deck.length === 0) {
             this.receiveDamage(1);
+            return {isBleedingOut: true};
         }
-        else {
-            const index = Math.floor(Math.random()*this.deck.length);
-            if(this.hand.length < MAX_HAND){
-                this.hand.push(this.deck[index]);
-            }
-            this.deck.splice(index, 1);
+
+        const index = Math.floor(Math.random() * this.deck.length);
+        if (this.hand.length < MAX_HAND) {
+            this.hand.push(this.deck[index]);
         }
+        this.deck.splice(index, 1);
+        return {isBleedingOut: false};
     };
 
     getManaSlots(): number {
@@ -46,7 +59,7 @@ export class Player {
     }
 
     incrementManaSlots(): void {
-        if(this.manaSlots < MAX_MANA_SLOT){
+        if (this.manaSlots < MAX_MANA_SLOT) {
             this.manaSlots += 1;
         }
     }
@@ -60,13 +73,13 @@ export class Player {
     }
 
     playCard(i: number): number {
-        if(i >= this.hand.length) {
+        if (i >= this.hand.length) {
             throw new RangeError('Index is too high');
         }
-        if(i < 0) {
+        if (i < 0) {
             throw new RangeError('Index is too low');
         }
-        if(this.filledManaSlots < this.hand[i]) {
+        if (this.filledManaSlots < this.hand[i]) {
             throw new Error('Insufficient mana');
         }
         const damage = this.hand[i];
@@ -88,5 +101,9 @@ export class Player {
 
     isDead(): boolean {
         return this.health <= 0;
+    }
+
+    getName(): string {
+        return this.name;
     }
 }
